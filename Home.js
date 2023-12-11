@@ -4,13 +4,13 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   Image,
-  Button,
   Pressable,
+  Button,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { styles } from "./styles/home";
 
 export const Home = () => {
   const { navigate } = useNavigation();
@@ -29,16 +29,13 @@ export const Home = () => {
 
   const saveToStorage = async () => {
     try {
-      // Get existing photo list from AsyncStorage
       const existingPhotos = await AsyncStorage.getItem("photos");
       const parsedExistingPhotos = existingPhotos
         ? JSON.parse(existingPhotos)
         : [];
 
-      // Add the new photo URI to the list
       const updatedPhotos = [...parsedExistingPhotos, capturedImage];
 
-      // Save the updated list back to AsyncStorage
       await AsyncStorage.setItem("photos", JSON.stringify(updatedPhotos));
 
       console.log("Saved to storage:", capturedImage);
@@ -65,6 +62,12 @@ export const Home = () => {
               style={styles.shotButton}
               onPress={takePicture}
             ></TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setCameraMode(false)}
+              style={styles.closeCamera}
+            >
+              <Text>X</Text>
+            </TouchableOpacity>
           </View>
         </Camera>
       ) : (
@@ -113,77 +116,3 @@ export const Home = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  camera: {
-    flex: 1,
-  },
-  cameraContent: {
-    flex: 1,
-    position: "relative",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    paddingBottom: 30,
-  },
-  buttonContainer: {
-    position: "relative",
-    flexDirection: "row",
-    columnGap: 5,
-
-    justifyContent: "center",
-    columnGap: 25,
-    width: "80%",
-  },
-  ctrlButton: {
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    backgroundColor: "#7986CB",
-  },
-  previewContainer: {
-    flex: 1,
-    rowGap: 10,
-    paddingVertical: 50,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  previewImage: {
-    width: "80%",
-    height: "60%",
-    resizeMode: "contain",
-    marginBottom: 20,
-  },
-  button: {
-    alignItems: "center",
-    backgroundColor: "#512DA8",
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    minWidth: 200,
-    borderRadius: 5,
-  },
-  shotButton: {
-    width: 70,
-    height: 70,
-    backgroundColor: "red",
-    borderRadius: 50,
-    shadowColor: "black",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.4,
-    shadowRadius: 4,
-    elevation: 8,
-  },
-  btnText: {
-    color: "white",
-  },
-  text: {
-    fontSize: 18,
-    color: "white",
-  },
-});

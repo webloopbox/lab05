@@ -1,9 +1,8 @@
-// PhotoList.js
 import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const PhotoList = () => {
+export const SavedImages = () => {
   const [savedImages, setSavedImages] = useState([]);
 
   useEffect(() => {
